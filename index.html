@@ -6,8 +6,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NASA APOD</title>
+    <link rel="icon" href="/favicon.ico" />
   </head>
   <body>
+    <!--Loader-->
+    <div class="loader hidden">
+      <img src="./rocket-1.svg" alt="Loading..." />
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+      <!-- Navigation -->
+      <div class="navigator-container">
+        <span class="background"></span>
+        <!-- Results Nav -->
+        <span class="navigation-items" id="resultsNav">
+          <h3 class="clickable">Favorites</h3>
+          <h3>&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;</h3>
+          <h3 class="clickable">Load More...</h3>
+        </span>
+        <!-- Favorites Nav -->
+        <span class="navigation-items hidden" id="favoritesNav">
+          <h3 class="clickable">Load More NASA Images</h3>
+        </span>
+      </div>
+
+      <!-- Image container -->
+      <div class="images-container">
+        <div class="card">
+          <a href="" title="View Full Image" target="_blank">
+            <img
+              src="https://apod.nasa.gov/apod/image/2206/Mercury_BepiColombo_2049.jpg"
+              alt="Pic of the day"
+              class="card-img-top"
+            />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Title if Image</h5>
+            <p class="clickable">Add to favorites</p>
+            <p class="card-text">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa
+              error nihil dicta placeat voluptatem architecto, expedita
+              voluptate adipisci nemo, consectetur aut ullam distinctio beatae,
+              aliquid odit! Praesentium quas incidunt fugit.
+            </p>
+            <small class="text-muted">
+              <strong>Date</strong>
+              <span>Copyright Info </span>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Confirm -->
+    <div class="save-confirmed">
+      <h1>Added!</h1>
+    </div>
     <!--Script-->
     <script src="./script.js" type="text/javascript"></script>
   </body>
