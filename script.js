@@ -12,9 +12,42 @@ const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&count=${co
 let resultsArray = [];
 let favorites = {};
 
-function updateDOM(){
+//Show Content
+function showContent(page){
+    window.scrollTo({top: 0 , behavior: 'instant'});
+    if(page === 'results'){
+        resultsNav.classList.remove('hidden');
+        favoritesNav.classList.add('hidden');
+    }
+    else{
+        resultsNav.classList.add('hidden');
+        favoritesNav.classList.remove('hidden');
+    }
+    loader.classList.add('hidden');
+}
 
-    resultsArray.forEach((result) => {
+//Function Remove Favorite
+function removeFavorite(itemUrl){
+    if(favorites[itemUrl]){
+        delete favorites[itemUrl];
+        //Set Favorites in localStorage
+        localStorage.setItem('nasaFavorites', JSON.stringify(favorites));
+        updateDOM('favorites');
+    }
+}
+
+function createDOMNodes(page){
+
+    console.log(page);
+    let loadPage = resultsArray;
+    console.log('Favorite without object.values()', favorites);
+    if(page === 'favorites'){
+        //Convert favorites object into array so that for each can iterate over it
+        loadPage = Object.values(favorites);
+        console.log(loadPage);
+    }
+
+    loadPage.forEach((result) => {
         //Card Container
         const card = document.createElement('div');
         card.classList.add('card');
@@ -39,8 +72,15 @@ function updateDOM(){
         //Save Text
         const saveText = document.createElement('p');
         saveText.classList.add('clickable');
-        saveText.textContent = 'Add To Favorites';
-        saveText.setAttribute('onclick',  `saveFavorite('${result.url}')`);
+        if (page === 'results'){
+            saveText.textContent = 'Add To Favorites';
+            saveText.setAttribute('onclick',  `saveFavorite('${result.url}')`);
+        }
+        else{
+            saveText.textContent = 'Remove Favorite';
+            saveText.setAttribute('onclick', `removeFavorite('${result.url}')`);
+        }
+        
         //Card Text
         const cardText = document.createElement('p');
         cardText.textContent = result.explanation;
@@ -64,15 +104,31 @@ function updateDOM(){
         card.append(link, cardBody);
         imagesContainer.appendChild(card);       
     });
+
+}
+
+function updateDOM(whichPage){
+
+    //Get Favorites from localStorage
+    if(localStorage.getItem('nasaFavorites')){
+        favorites = JSON.parse(localStorage.getItem('nasaFavorites'));
+        console.log('Favorites from localStorage',favorites);
+    }
+    imagesContainer.textContent = '';
+    createDOMNodes(whichPage);
+    showContent(whichPage);
 }
 
 //Get 10 Imgs from NASA APOD API
 async function getNasaPictures(){
+
+    //Display Loader
+    loader.classList.remove('hidden');
+
     try{    
         const response = await fetch(apiUrl);
         resultsArray = await response.json();
-        updateDOM();
-        console.log(resultsArray);
+        updateDOM('results');
     }catch(e){
         //Catch Error here
     }
